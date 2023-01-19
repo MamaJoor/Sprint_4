@@ -1,5 +1,6 @@
 import allure
-from time import sleep
+from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from pages.header_page import HeaderPage
 
 
@@ -9,9 +10,9 @@ class TestHeaderPage:
         header_page = HeaderPage(driver)
         header_page.get_main_page_url()
         header_page.click_yandex_logo()
-        sleep(1)
         driver.switch_to.window(driver.window_handles[-1])
-        assert driver.current_url.__contains__('https://dzen.ru/?')
+        WebDriverWait(driver, 3).until(EC.url_to_be('https://dzen.ru/?yredirect=true'))
+        assert driver.current_url == "https://dzen.ru/?yredirect=true"
 
     @allure.title('Проверка нажатия на логотип самоката')
     def test_click_scooter_logo(self, driver):
